@@ -1,4 +1,4 @@
-import { Thought, User, Reaction } from '../models/index.js';
+import { Thought, User } from '../models/index.js';
 import { Request, Response } from 'express';
 
 
@@ -35,7 +35,7 @@ import { Request, Response } from 'express';
       const thought = await Thought.create(req.body);
       const user = await User.findOneAndUpdate(
         { _id: req.body.userId },
-        { $addToSet: { applications: thought._id } },
+        { $addToSet: { thoughts: thought._id } },
         { new: true }
       );
 

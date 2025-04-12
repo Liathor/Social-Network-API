@@ -1,11 +1,12 @@
 import { Schema, model, Types, Document, ObjectId } from 'mongoose';
+import { Reaction } from './index.js';
 
 interface IThought extends Document { 
   _id: ObjectId;
   thoughtText?: string;
   username?: string;
   createdAt: Date | string;
-  reaction?: string[];
+  reaction?: typeof Reaction[];
 }
 
 const thoughtSchema = new Schema<IThought>(
@@ -37,12 +38,7 @@ const thoughtSchema = new Schema<IThought>(
         return new Date().toISOString();
       }
     },
-    reaction: [
-      {
-      type: Schema.Types.ObjectId,
-      ref: 'reactions',
-      },
-    ],
+    reaction: [Reaction],
   },
   {
     toJSON: {
