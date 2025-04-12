@@ -34,7 +34,7 @@ import { Request, Response } from 'express';
     try {
       const thought = await Thought.create(req.body);
       const user = await User.findOneAndUpdate(
-        { _id: req.body.userId },
+        { username: req.body.username },
         { $addToSet: { thoughts: thought._id } },
         { new: true }
       );
@@ -45,10 +45,39 @@ import { Request, Response } from 'express';
         })
       }
 
-      res.json('Created the thought 🎉');
+      res.json('Created the thought, woot');
       return;
     } catch (err) {
       console.log(err);
+      res.status(500).json(err);
+      return;
+    }
+  }
+
+  // Delete Thought
+  export const deleteThought = async (req: Request, res: Response) => {
+    try {
+      const thought = await Thought.findOneAndDelete({ _id: req.params.thoughtId });
+
+      if (!thought) {
+        return res.status(404).json({ message: 'No application with this id!' });
+      }
+
+      const user = await User.findOneAndUpdate(
+        { thoughts: req.params.thoughtId },
+        { $pull: { thoughts: req.params.thoughtId } },
+        { new: true }
+      );
+
+      if (!user) {
+        return res.status(404).json({
+          message: 'No user with this id!',
+        });
+      }
+
+      res.json({ message: 'Thought successfully deleted!' });
+      return;
+    } catch (err) {
       res.status(500).json(err);
       return;
     }
@@ -59,7 +88,7 @@ import { Request, Response } from 'express';
     try {
       const thought = await Thought.findOneAndUpdate(
         { _id: req.params.thoughtId },
-        { $addToSet: { reactions: req.body } },
+        { $addToSet: { reaction: req.body } },
         { runValidators: true, new: true }
       );
 
@@ -80,7 +109,7 @@ import { Request, Response } from 'express';
     try {
       const thought = await Thought.findOneAndUpdate(
         { _id: req.params.thoughtId },
-        { $pull: { reactions: { reactionId: req.params.reactionId } } },
+        { $pull: { reaction: { _id: req.params.reactionId } } },
         { runValidators: true, new: true }
       );
 
@@ -118,31 +147,3 @@ import { Request, Response } from 'express';
   //   }
   // }
 
-  // // TODO: Add comments to the functionality of the deleteApplication method
-  // export const deleteApplication = async (req: Request, res: Response) => {
-  //   try {
-  //     const application = await Application.findOneAndDelete({ _id: req.params.applicationId });
-
-  //     if (!application) {
-  //       return res.status(404).json({ message: 'No application with this id!' });
-  //     }
-
-  //     const user = await User.findOneAndUpdate(
-  //       { applications: req.params.applicationId },
-  //       { $pull: { applications: req.params.applicationId } },
-  //       { new: true }
-  //     );
-
-  //     if (!user) {
-  //       return res.status(404).json({
-  //         message: 'Application created but no user with this id!',
-  //       });
-  //     }
-
-  //     res.json({ message: 'Application successfully deleted!' });
-  //     return;
-  //   } catch (err) {
-  //     res.status(500).json(err);
-  //     return;
-  //   }
-  // }

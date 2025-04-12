@@ -3,8 +3,8 @@ import { Thought } from './index.js';
 
 interface IUser extends Document {
   _id: ObjectId;
-  thoughts: typeof Thought[];
-  friends: ObjectId[];
+  thoughts?: typeof Thought[];
+  friends?: ObjectId[];
   username: string;
   email: string;
 }
@@ -15,7 +15,12 @@ const userSchema = new Schema<IUser>(
       type: Schema.Types.ObjectId,
       default: () => new Types.ObjectId(),
     },
-    thoughts: [Thought],
+    thoughts: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'thoughts',
+      },
+    ],
     friends: [
       {
         type: Schema.Types.ObjectId,
@@ -48,10 +53,10 @@ userSchema.virtual('friendCount').get(function () {
   return this.friends?.length;
 });
 
-userSchema.path('email').validate(function (email) {
-  var emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-  return emailRegex.test(email.text); // Assuming email has a text attribute
-}, 'The e-mail field cannot be empty.')
+// userSchema.path('email').validate(function (email) {
+//   var emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+//   return emailRegex.test(email.text); // Assuming email has a text attribute
+// }, 'The e-mail field cannot be empty.')
 
 const User = model('users', userSchema);
 

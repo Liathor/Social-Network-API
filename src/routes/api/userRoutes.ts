@@ -13,7 +13,7 @@ router.route('/:userId')
 
 // /api/users/:userId/friends/:friendId
 router.route('/:userId/friends/:friendId')
-    .put(addFriend)
-    .put(removeFriend);
+    .post(addFriend)
+    .delete(removeFriend);
 
 export default router;
