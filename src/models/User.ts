@@ -31,14 +31,13 @@ const userSchema = new Schema<IUser>(
       type: String,
       required: true,
       unique: true,
-      
     },
     email: {
       type: String,
       required: true,
       unique: true,
+      match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
     },
-
   },
   {
     toJSON: {
@@ -52,11 +51,6 @@ const userSchema = new Schema<IUser>(
 userSchema.virtual('friendCount').get(function () {
   return this.friends?.length;
 });
-
-// userSchema.path('email').validate(function (email) {
-//   var emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-//   return emailRegex.test(email.text); // Assuming email has a text attribute
-// }, 'The e-mail field cannot be empty.')
 
 const User = model('users', userSchema);
 

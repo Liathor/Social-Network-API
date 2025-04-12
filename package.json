@@ -2,7 +2,7 @@
   "name": "26-stu_mongoose-crud",
   "version": "1.0.0",
   "description": "Reverse engineer developer activity for CRUD methods in Mongoose",
- "main": "server.js",
+  "main": "server.js",
   "type": "module",
   "scripts": {
     "build": "npx tsc",
@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dayjs": "^1.11.13",
     "express": "^4.19.2",
     "mongoose": "^8.5.3"
   },

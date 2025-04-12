@@ -1,4 +1,8 @@
 import { Schema, model, Types, Document, ObjectId } from 'mongoose';
+import dayjs from 'dayjs';
+import advancedFormat from 'dayjs/plugin/advancedFormat.js';
+
+dayjs.extend(advancedFormat);
 
 interface IThought extends Document { 
   _id: ObjectId;
@@ -34,13 +38,17 @@ const reactionSchema = new Schema<IReaction>(
       type: Date,
       default: Date.now,
       get: (date: unknown) => {
-          if (date instanceof Date) {
-            return date.toISOString();
-          }
-          if (typeof date === 'string') {
-            return date;
-          }
-          return new Date().toISOString();
+        let actualDate: Date;
+    
+        if (date instanceof Date) {
+          actualDate = date;
+        } else if (typeof date === 'string' || typeof date === 'number') {
+          actualDate = new Date(date);
+        } else {
+          actualDate = new Date(); // fallback
+        }
+    
+        return dayjs(actualDate).format('MMM Do, YYYY [at] hh:mm a');
       }
     },
   },
@@ -72,13 +80,17 @@ const thoughtSchema = new Schema<IThought>(
       type: Date,
       default: Date.now,
       get: (date: unknown) => {
+        let actualDate: Date;
+    
         if (date instanceof Date) {
-          return date.toISOString();
+          actualDate = date;
+        } else if (typeof date === 'string' || typeof date === 'number') {
+          actualDate = new Date(date);
+        } else {
+          actualDate = new Date(); // fallback
         }
-        if (typeof date === 'string') {
-          return date;
-        }
-        return new Date().toISOString();
+    
+        return dayjs(actualDate).format('MMM Do, YYYY [at] hh:mm a');
       }
     },
     reaction: [reactionSchema],
