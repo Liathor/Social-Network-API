@@ -4,7 +4,7 @@ interface IThought extends Document {
   _id: ObjectId;
   thoughtText?: string;
   username?: string;
-  createdAt: Date;
+  createdAt: Date | string;
   reaction?: string[];
 }
 
@@ -27,6 +27,15 @@ const thoughtSchema = new Schema<IThought>(
     createdAt: {
       type: Date,
       default: Date.now,
+      get: (date: unknown) => {
+        if (date instanceof Date) {
+          return date.toISOString();
+        }
+        if (typeof date === 'string') {
+          return date;
+        }
+        return new Date().toISOString();
+      }
     },
     reaction: [
       {
