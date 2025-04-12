@@ -49,10 +49,10 @@ You can test the different API routes in a program like Insomnia. The different 
   POST to create a reaction stored in a single thought's reactions array field
   DELETE to pull and remove a reaction by the reaction's reactionId value
 
-![Users and thoughts](./assets/18-nosql-homework-demo-01.gif)
-![Users and thoughts by id](./assets/18-nosql-homework-demo-02.gif)
-![User Post, Put, Delete](./assets/18-nosql-homework-demo-03.gif)
-![Friends APIs](./assets/18-nosql-homework-demo-04.gif)
+![Users and thoughts](./Assets/18-nosql-homework-demo-01.gif)
+![Users and thoughts by id](./Assets/18-nosql-homework-demo-02.gif)
+![User Post, Put, Delete](./Assets/18-nosql-homework-demo-03.gif)
+![Friends APIs](./Assets/18-nosql-homework-demo-04.gif)
 
 ### Walkthrough Video
 Please use the following link to view a walkthrough video of the application in action:
